@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101312">
+  <meta name="description" content="Break a backend. Watch a city react. An interactive infrastructure lab with a Java backend, durable jobs, and a live 3D city.">
+  <title>BLACKOUT — Infrastructure City</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+<a class="skip-link" href="#controls">Skip to controls</a>
+<header class="site-header">
+  <a href="/" class="brand" aria-label="BLACKOUT home"><span class="brand-mark">B<span>↗</span></span>BLACKOUT<span class="brand-divider">/</span><span class="brand-detail">SYSTEMS LAB</span></a>
+  <nav aria-label="Main"><button class="nav-item active" id="nav-operations">Operations</button><button class="nav-item" id="nav-architecture">Architecture <span>↗</span></button><a class="nav-item source-nav" href="/downloads/blackout-source.zip" download>Source code <span>↗</span></a></nav>
+  <button id="mode-button" class="mode-button"><i></i><span id="mode-label">BROWSER DEMO</span><span>⌄</span></button>
+</header>
+<main>
+  <section class="intro">
+    <div><div class="eyebrow"><span class="tiny-cross">+</span> DISTRIBUTED SYSTEMS, MADE VISIBLE</div><h1>Keep the lights on<span>.</span></h1><p>A living city. A working backend. You control what breaks.</p></div>
+    <button class="guided-button" id="guided-button"><span class="play-icon">▶</span> Run a guided outage <span class="button-arrow">↗</span></button>
+  </section>
+  <div class="mode-note" id="mode-note"><span class="note-dot"></span><span id="mode-note-text">Browser simulation · Explore the lab here. The source includes the real Java + RabbitMQ stack.</span><button id="mode-details">How it works <span>↗</span></button></div>
+  <section class="workspace" aria-label="Infrastructure lab">
+    <div class="main-column">
+      <section class="city-card" aria-labelledby="city-title">
+        <div class="card-topline"><div><span class="live-dot"></span><h2 id="city-title">LIVE TOPOLOGY</h2><span class="topline-divider">/</span><span class="muted mono">SECTOR 01</span></div><span class="health-pill" id="city-health">ALL SYSTEMS OPERATIONAL</span></div>
+        <div class="city-host" id="city-host" aria-label="Interactive 3D city. Drag to rotate, scroll to zoom, or select a district below."><div class="city-coordinate coord-top">N 43°46′ / W 79°30′</div><div class="city-coordinate coord-bottom">INFRASTRUCTURE GRID — 01</div><div class="city-loading" id="city-loading">Bringing the city online<span>•••</span></div></div>
+        <div class="city-toolbar"><div class="legend"><span><i class="yellow"></i>Requests</span><span><i class="mint"></i>Completions</span><span><i class="orange"></i>Backlog</span></div><div class="camera-controls"><button id="orbit-button" aria-pressed="false" title="Toggle automatic orbit">↻ <span>Orbit</span></button><button id="motion-button" aria-pressed="false" title="Pause visual motion">Ⅱ <span>Motion</span></button><button id="reset-view" title="Reset camera">⌖ <span>Reset view</span></button></div></div>
+        <div class="district-tabs" aria-label="Select a district"><button data-district="gateway" class="selected"><span>01</span> Gateway <i></i></button><button data-district="queue"><span>02</span> Queue <i></i></button><button data-district="workers"><span>03</span> Workers <i></i></button><button data-district="database"><span>04</span> Database <i></i></button></div>
+        <div class="district-detail"><div><span class="detail-index" id="district-index">01 /</span><strong id="district-title">API gateway</strong><span class="service-state" id="district-status">ONLINE</span></div><p id="district-description">Every request enters here. Accepted jobs are saved before they are sent to the queue.</p><button id="inspect-button">Inspect requests <span>↗</span></button></div>
+      </section>
+      <section class="metric-grid" aria-label="System metrics">
+        <article class="metric-card"><div class="metric-title">REQUESTS / SEC <span>↗</span></div><div class="metric-value"><span id="metric-rps">0</span><small>req/s</small></div><svg class="sparkline yellow-chart" viewBox="0 0 220 35" preserveAspectRatio="none" aria-hidden="true"><path id="chart-rps"/></svg><div class="metric-foot"><span id="total-submitted">0 accepted</span><span>LAST 60s</span></div></article>
+        <article class="metric-card"><div class="metric-title">JOBS IN FLIGHT <span>≋</span></div><div class="metric-value"><span id="metric-queue">0</span><small>jobs</small></div><svg class="sparkline orange-chart" viewBox="0 0 220 35" preserveAspectRatio="none" aria-hidden="true"><path id="chart-queue"/></svg><div class="metric-foot"><span id="total-completed">0 completed</span><span>LAST 60s</span></div></article>
+        <article class="metric-card"><div class="metric-title">P95 JOB LATENCY <span>◷</span></div><div class="metric-value"><span id="metric-latency">0</span><small id="latency-unit">ms</small></div><svg class="sparkline white-chart" viewBox="0 0 220 35" preserveAspectRatio="none" aria-hidden="true"><path id="chart-latency"/></svg><div class="metric-foot"><span>Includes queue time</span><span>LAST 100</span></div></article>
+        <article class="metric-card"><div class="metric-title">ACCEPTANCE RATE <span>✓</span></div><div class="metric-value"><span id="metric-success">100</span><small>%</small></div><svg class="sparkline mint-chart" viewBox="0 0 220 35" preserveAspectRatio="none" aria-hidden="true"><path id="chart-success"/></svg><div class="metric-foot"><span>Accepted / attempted</span><span>SESSION</span></div></article>
+      </section>
+    </div>
+    <aside class="control-column" id="controls">
+      <section class="control-card"><div class="panel-heading"><h2>CONTROL ROOM</h2><span><i class="live-dot"></i>CONNECTED</span></div>
+        <div class="traffic-control"><label for="traffic">Incoming traffic</label><div class="traffic-number"><output id="traffic-value" for="traffic">3</output><span>requests / second</span></div><input id="traffic" type="range" min="0" max="30" value="3" step="1"><div class="range-labels"><span>IDLE</span><span>30 REQ/S</span></div></div>
+        <div class="worker-control"><label for="worker-count">Worker concurrency</label><div class="stepper"><button id="fewer-workers" aria-label="Remove one worker">−</button><output id="worker-count">02</output><button id="more-workers" aria-label="Add one worker">+</button></div></div>
+        <div class="failure-heading"><span class="eyebrow">INJECT A FAILURE</span><span>↓</span></div>
+        <button class="failure-button" id="worker-outage" aria-pressed="false"><span class="failure-icon">ϟ</span><span><strong>Worker blackout</strong><small>Stop consumers. Watch jobs queue.</small></span><span class="switch"><i></i></span></button>
+        <button class="failure-button" id="traffic-surge" aria-pressed="false"><span class="failure-icon">↗</span><span><strong>Traffic surge</strong><small>Push the system to 24 requests/sec.</small></span><span class="switch"><i></i></span></button>
+        <button class="failure-button" id="slow-workers" aria-pressed="false"><span class="failure-icon">◷</span><span><strong>Slow workers</strong><small>Use a 1.6 second processing delay.</small></span><span class="switch"><i></i></span></button>
+        <button class="failure-button" id="gateway-outage" aria-pressed="false"><span class="failure-icon">⊘</span><span><strong>Gateway outage</strong><small>Reject incoming jobs with HTTP 503.</small></span><span class="switch"><i></i></span></button>
+        <button id="recover-button" class="recover-button"><span>↺</span> Restore the grid <span>↗</span></button>
+        <p class="recover-note">Restores services, 3 req/s and 4 workers to clear the backlog.</p>
+      </section>
+      <section class="activity-card"><div class="panel-heading"><h2>EVENT STREAM</h2><span id="session-time">00:00</span></div><div id="event-list" class="event-list"></div><button id="all-events">Open request inspector <span>↗</span></button></section>
+    </aside>
+  </section>
+  <div id="scenario-banner" class="scenario-banner" hidden><span class="scenario-index" id="scenario-index">01 / 03</span><div><strong id="scenario-title">Cut the lights</strong><p id="scenario-description">Consumers stop. Accepted jobs stay in the queue.</p></div><button id="stop-scenario">End walkthrough ×</button></div>
+  <footer><span><i class="footer-square"></i> FAILURE IS PART OF THE SYSTEM.</span><span>Java / RabbitMQ / Three.js <span class="footer-divider">·</span> <a href="/downloads/blackout-source.zip" download>Download the project ↗</a></span></footer>
+</main>
+<dialog id="info-dialog"><div class="dialog-header"><div><div class="eyebrow">BLACKOUT / FIELD NOTES</div><h2 id="dialog-title">Architecture</h2></div><button id="close-dialog" class="close-dialog" aria-label="Close dialog">×</button></div><div id="dialog-body"></div></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+<script src="/runtime.js"></script>
+<script type="module" src="/src/main.js"></script>
+</body></html>

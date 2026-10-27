@@ -1,0 +1,32 @@
+# Dependencies and build output
+node_modules/
+dist/
+.vite/
+**/target/
+artifacts/
+__pycache__/
+*.log
+
+# Generated source download (built by scripts/bundle.py)
+public/downloads/
+
+# Local runtime data (H2 database files, broker state)
+**/data/
+*.mv.db
+*.trace.db
+
+# Environment files and credentials — never commit real values
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+
+# Tool / editor / OS files
+.openai/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

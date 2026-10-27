@@ -1,0 +1,11 @@
+node_modules
+dist
+.git
+.openai
+**/target
+**/data
+artifacts
+*.log
+.env
+.env.*
+!.env.example
