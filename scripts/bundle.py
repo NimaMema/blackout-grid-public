@@ -14,7 +14,7 @@ out = root / "public" / "downloads" / "blackout-source.zip"
 
 # Individual files allowed at the project root.
 ROOT_FILES = {
-    "README.md", "LICENSE", "package.json", "package-lock.json", "index.html",
+    "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "package.json", "package-lock.json", "index.html",
     "vite.config.js", "compose.yaml", ".gitignore", ".dockerignore", ".env.example",
 }
 # Directories whose contents may be packaged, subject to the extension allowlist.

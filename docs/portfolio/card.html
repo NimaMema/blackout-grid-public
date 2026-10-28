@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BLACKOUT social card</title>
+<!-- Source for social-preview.png (1280×640) and linkedin-thumbnail.png (1200×627).
+     Rendered by scripts/capture-screenshots.mjs; the city art is a real screenshot. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root { --bg:#101312; --panel:#171b18; --border:#30362e; --muted:#929c8f; --text:#e9ece6; --yellow:#d9f477; --orange:#ec9d59; --mint:#8bd6b0; --mono:'IBM Plex Mono',monospace }
+  * { box-sizing:border-box; margin:0 }
+  html,body { width:100%; height:100%; background:var(--bg) }
+  body { color:var(--text); font-family:'DM Sans',sans-serif; overflow:hidden;
+    background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+    background-size:40px 40px; background-position:-1px -1px }
+  .card { position:absolute; inset:0; display:grid; grid-template-columns:1fr 1.08fr; gap:36px; padding:56px 0 56px 64px;
+    background:radial-gradient(ellipse at 75% 55%,rgba(217,244,119,.10),transparent 60%),linear-gradient(90deg,var(--bg) 46%,rgba(16,19,18,.55)) }
+  .copy { display:flex; flex-direction:column; justify-content:center; z-index:1 }
+  .brand { display:flex; align-items:center; gap:14px; margin-bottom:26px }
+  .mark { position:relative; display:grid; place-items:center; width:46px; height:46px; background:var(--yellow); color:var(--bg); font:900 40px/1 'DM Sans' }
+  .mark span { position:absolute; top:0; right:2px; font-size:19px }
+  .eyebrow { font:500 13px var(--mono); letter-spacing:2.4px; color:var(--muted) }
+  .eyebrow b { color:var(--yellow); font-weight:500 }
+  h1 { font:800 112px/0.9 'Barlow Condensed'; letter-spacing:-2px }
+  h1 span { color:var(--yellow) }
+  .tagline { margin-top:14px; font-size:27px; color:var(--text) }
+  ul { list-style:none; padding:0; margin-top:28px; display:grid; gap:11px }
+  li { font:400 15px var(--mono); color:#c9d0c4; display:flex; gap:12px; align-items:center }
+  li i { width:9px; height:9px; flex:none; background:var(--yellow) }
+  li:nth-child(2) i { background:var(--orange) } li:nth-child(3) i { background:var(--mint) }
+  .note { margin-top:30px; font:500 11.5px var(--mono); letter-spacing:1.6px; color:var(--muted); border-top:1px solid var(--border); padding-top:16px; max-width:520px }
+  .art { position:relative; align-self:center; border:1px solid var(--border); border-right:0; background:var(--panel); overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.55) }
+  .art .bar { display:flex; justify-content:space-between; padding:12px 18px; font:500 11px var(--mono); letter-spacing:2px; border-bottom:1px solid var(--border) }
+  .art .bar em { font-style:normal; color:#ee745f; border:1px solid #6a3328; padding:3px 8px; letter-spacing:1px }
+  .crop { aspect-ratio:670/400; overflow:hidden }
+  .crop img { display:block; width:214.93%; margin:-62.69% 0 0 -34.33% }
+  .linkedin h1 { font-size:104px }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="copy">
+    <div class="brand"><div class="mark">B<span>↗</span></div><div class="eyebrow"><b>+</b> DISTRIBUTED SYSTEMS, MADE VISIBLE</div></div>
+    <h1>BLACKOUT<span>.</span></h1>
+    <p class="tagline">Break a backend. Watch a city react.</p>
+    <ul>
+      <li><i></i>Spring Boot API + workers · RabbitMQ · H2</li>
+      <li><i></i>Transactional outbox · publisher confirms</li>
+      <li><i></i>Idempotent completion · Three.js city</li>
+    </ul>
+    <p class="note">INTERACTIVE BROWSER DEMO · FULL JAVA STACK RUNS LOCALLY</p>
+  </div>
+  <div class="art">
+    <div class="bar"><span>● WORKER BLACKOUT · LIVE JAVA BACKEND</span><em>SERVICE INTERRUPTION</em></div>
+    <div class="crop"><img src="../screenshots/02-worker-blackout.png" alt=""></div>
+  </div>
+</div>
+<script>if (location.hash === '#linkedin') document.body.classList.add('linkedin');</script>
+</body>
+</html>

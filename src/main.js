@@ -3,6 +3,9 @@ import { Simulation, DEFAULT_CONTROL } from './simulation.js';
 import { createCity } from './city.js';
 
 const $ = id => document.getElementById(id);
+// Static builds for GitHub Pages have no Java API on their origin; they only run the browser model.
+const hosted = import.meta.env.MODE === 'pages';
+const REPO_URL = 'https://github.com/NimaMema/blackout-grid-public';
 const number = n => new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 }).format(n);
 const districts = {
   gateway: { n: '01', title: 'API gateway', description: 'Every request enters here. Accepted jobs are saved before they are sent to the queue.' },
@@ -117,9 +120,12 @@ function render() {
   const seconds = Math.floor(state.uptimeSec);
   $('session-time').textContent = String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0');
   $('mode-label').textContent = live ? 'LIVE JAVA BACKEND' : 'BROWSER DEMO';
+  $('control-link').textContent = live ? 'CONNECTED' : 'SIMULATED';
   $('mode-note-text').textContent = live
     ? 'Live Java backend · Requests, queue depth and completions come from your running services.'
-    : 'Browser simulation · Explore the lab here. The source includes the real Java + RabbitMQ stack.';
+    : hosted
+      ? 'Hosted demo · Every number here is simulated in your browser. Live mode needs the Java + RabbitMQ stack, run locally with Docker.'
+      : 'Browser simulation · Explore the lab here. The source includes the real Java + RabbitMQ stack.';
   chart('chart-rps', 'rps', 5); chart('chart-queue', 'queue', 8);
   chart('chart-latency', 'latency', 500); chart('chart-success', 'success', 100);
   renderDistrict(); renderEvents(); city?.update(state);
@@ -133,8 +139,14 @@ function showDialog(view) {
     $('dialog-title').textContent = 'Request inspector'; renderRequests();
   } else if (view === 'connection') {
     $('dialog-title').textContent = 'Choose your environment';
-    body.innerHTML = '<p class="dialog-copy"><strong>Browser demo</strong> runs a deterministic queue simulation in this tab. It does not start a Java server or contact RabbitMQ.</p><p class="dialog-copy"><strong>Live Java mode</strong> reads the real API on the same origin. Download the project, install Docker Desktop, start the stack, then open its local address.</p><pre class="code-line">docker compose up --build\n\nOpen http://localhost:3000</pre><div class="dialog-callout">The Docker version connects automatically. The hosted preview stays in browser mode. Live mode never silently substitutes simulated metrics.</div><div class="dialog-actions"><a class="dialog-action" href="/downloads/blackout-source.zip" download>Download full project ↗</a><button class="dialog-action secondary" id="connect-live">Connect to this origin’s Java API</button><button class="dialog-action secondary" id="use-demo">Use browser demo</button></div>';
-    $('connect-live').onclick = async () => {
+    body.innerHTML = '<p class="dialog-copy"><strong>Browser demo</strong> runs a deterministic queue simulation in this tab. It does not start a Java server or contact RabbitMQ.</p><p class="dialog-copy"><strong>Live Java mode</strong> reads the real API on the same origin. Download the project, install Docker Desktop, start the stack, then open its local address.</p><pre class="code-line">docker compose up --build\n\nOpen http://localhost:3000</pre><div class="dialog-callout">' + (hosted
+      ? 'You are on the static GitHub Pages preview. It has no Java API, so it always stays in browser mode. Run the stack locally to connect live.'
+      : 'The Docker version connects automatically. The hosted preview stays in browser mode. Live mode never silently substitutes simulated metrics.')
+      + '</div><div class="dialog-actions">' + (hosted
+      ? '<a class="dialog-action" href="' + REPO_URL + '">View source on GitHub ↗</a>'
+      : '<a class="dialog-action" href="downloads/blackout-source.zip" download>Download full project ↗</a><button class="dialog-action secondary" id="connect-live">Connect to this origin’s Java API</button>')
+      + '<button class="dialog-action secondary" id="use-demo">Use browser demo</button></div>';
+    if (!hosted) $('connect-live').onclick = async () => {
       try {
         $('connect-live').disabled = true;
         const health = await api('health'); if (health.product !== 'BLACKOUT') throw new Error('This origin does not serve a BLACKOUT API.');
@@ -145,7 +157,7 @@ function showDialog(view) {
     $('use-demo').onclick = () => { stopScenario(); live = false; simulation = new Simulation(); state = simulation.snapshot(); render(); dialog.close(); toast('New browser sandbox started.'); };
   } else {
     $('dialog-title').textContent = 'A city with a system underneath.';
-    body.innerHTML = '<p class="dialog-copy">Each district represents a part of an asynchronous job pipeline. In the full stack, these are real Java services, a RabbitMQ broker and a disk-backed H2 database. Moving lights are a sampled view of accepted and completed jobs.</p><div class="architecture-flow"><div class="architecture-node"><small>01 / ACCEPT</small><strong>API gateway</strong><p>Spring Boot accepts work. Jobs and outbox entries are saved in one database transaction.</p></div><div class="architecture-node"><small>02 / ROUTE</small><strong>RabbitMQ</strong><p>The publisher waits for confirmation. Undelivered outbox entries are retried.</p></div><div class="architecture-node"><small>03 / COMPUTE</small><strong>Java workers</strong><p>Consumers perform SHA-256 work. Delays and consumer shutdowns are explicit lab controls.</p></div><div class="architecture-node"><small>04 / COMMIT</small><strong>Job archive</strong><p>Results are committed before acknowledgement. Repeated completion callbacks are idempotent.</p></div></div><div class="dialog-callout"><strong>The failure experiment:</strong> stop the workers, let the queue grow, then restore the grid. Accepted work stays queued while throughput drops. After recovery, the fleet drains the backlog.</div><p class="dialog-copy">The API exposes the latest metrics and bounded recent events. The city polls once per second. P95 latency includes time waiting in the queue; acceptance rate measures accepted requests, not completed jobs.</p><p class="dialog-copy"><strong>Current environment: </strong>' + (live ? 'a live Java backend.' : 'the browser simulation. The Java services are included in the download.') + '</p><div class="dialog-actions"><a class="dialog-action" href="/downloads/blackout-source.zip" download>Download source + setup guide ↗</a><button id="architecture-demo" class="dialog-action secondary">Try the guided outage</button></div>';
+    body.innerHTML = '<p class="dialog-copy">Each district represents a part of an asynchronous job pipeline. In the full stack, these are real Java services, a RabbitMQ broker and a disk-backed H2 database. Moving lights are a sampled view of accepted and completed jobs.</p><div class="architecture-flow"><div class="architecture-node"><small>01 / ACCEPT</small><strong>API gateway</strong><p>Spring Boot accepts work. Jobs and outbox entries are saved in one database transaction.</p></div><div class="architecture-node"><small>02 / ROUTE</small><strong>RabbitMQ</strong><p>The publisher waits for confirmation. Undelivered outbox entries are retried.</p></div><div class="architecture-node"><small>03 / COMPUTE</small><strong>Java workers</strong><p>Consumers perform SHA-256 work. Delays and consumer shutdowns are explicit lab controls.</p></div><div class="architecture-node"><small>04 / COMMIT</small><strong>Job archive</strong><p>Results are committed before acknowledgement. Repeated completion callbacks are idempotent.</p></div></div><div class="dialog-callout"><strong>The failure experiment:</strong> stop the workers, let the queue grow, then restore the grid. Accepted work stays queued while throughput drops. After recovery, the fleet drains the backlog.</div><p class="dialog-copy">The API exposes the latest metrics and bounded recent events. The city polls once per second. P95 latency includes time waiting in the queue; acceptance rate measures accepted requests, not completed jobs.</p><p class="dialog-copy"><strong>Current environment: </strong>' + (live ? 'a live Java backend.' : 'the browser simulation. The Java services are included in the download.') + '</p><div class="dialog-actions">' + (hosted ? '<a class="dialog-action" href="' + REPO_URL + '">Source + setup guide on GitHub ↗</a>' : '<a class="dialog-action" href="downloads/blackout-source.zip" download>Download source + setup guide ↗</a>') + '<button id="architecture-demo" class="dialog-action secondary">Try the guided outage</button></div>';
     $('architecture-demo').onclick = () => { dialog.close(); startScenario(); };
   }
   if (!dialog.open) dialog.showModal();
@@ -233,7 +245,9 @@ try {
   console.warn('WebGL unavailable:', e.message);
 }
 render();
-if (window.BLACKOUT_RUNTIME?.mode === 'live' || new URLSearchParams(location.search).get('live') === '1') {
+if (hosted) {
+  document.querySelectorAll('.source-nav').forEach(a => { a.href = REPO_URL; a.removeAttribute('download'); });
+} else if (window.BLACKOUT_RUNTIME?.mode === 'live' || new URLSearchParams(location.search).get('live') === '1') {
   live = true;
   api('snapshot').then(snapshot => { state = snapshot; render(); }).catch(() => {
     $('mode-label').textContent = 'BACKEND DISCONNECTED';
