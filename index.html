@@ -5,13 +5,17 @@
   <meta name="theme-color" content="#101312">
   <meta name="description" content="Break a backend. Watch a city react. An interactive infrastructure lab with a Java backend, durable jobs, and a live 3D city.">
   <title>BLACKOUT — Infrastructure City</title>
+  <meta property="og:title" content="BLACKOUT — Break a backend. Watch a city react.">
+  <meta property="og:description" content="An asynchronous Java + RabbitMQ job pipeline you can break on purpose, rendered as a living 3D city.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/NimaMema/blackout-grid-public/main/docs/portfolio/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
 <a class="skip-link" href="#controls">Skip to controls</a>
 <header class="site-header">
-  <a href="/" class="brand" aria-label="BLACKOUT home"><span class="brand-mark">B<span>↗</span></span>BLACKOUT<span class="brand-divider">/</span><span class="brand-detail">SYSTEMS LAB</span></a>
-  <nav aria-label="Main"><button class="nav-item active" id="nav-operations">Operations</button><button class="nav-item" id="nav-architecture">Architecture <span>↗</span></button><a class="nav-item source-nav" href="/downloads/blackout-source.zip" download>Source code <span>↗</span></a></nav>
+  <a href="./" class="brand" aria-label="BLACKOUT home"><span class="brand-mark">B<span>↗</span></span>BLACKOUT<span class="brand-divider">/</span><span class="brand-detail">SYSTEMS LAB</span></a>
+  <nav aria-label="Main"><button class="nav-item active" id="nav-operations">Operations</button><button class="nav-item" id="nav-architecture">Architecture <span>↗</span></button><a class="nav-item source-nav" href="downloads/blackout-source.zip" download>Source code <span>↗</span></a></nav>
   <button id="mode-button" class="mode-button"><i></i><span id="mode-label">BROWSER DEMO</span><span>⌄</span></button>
 </header>
 <main>
@@ -37,7 +41,7 @@
       </section>
     </div>
     <aside class="control-column" id="controls">
-      <section class="control-card"><div class="panel-heading"><h2>CONTROL ROOM</h2><span><i class="live-dot"></i>CONNECTED</span></div>
+      <section class="control-card"><div class="panel-heading"><h2>CONTROL ROOM</h2><span><i class="live-dot"></i><span id="control-link">SIMULATED</span></span></div>
         <div class="traffic-control"><label for="traffic">Incoming traffic</label><div class="traffic-number"><output id="traffic-value" for="traffic">3</output><span>requests / second</span></div><input id="traffic" type="range" min="0" max="30" value="3" step="1"><div class="range-labels"><span>IDLE</span><span>30 REQ/S</span></div></div>
         <div class="worker-control"><label for="worker-count">Worker concurrency</label><div class="stepper"><button id="fewer-workers" aria-label="Remove one worker">−</button><output id="worker-count">02</output><button id="more-workers" aria-label="Add one worker">+</button></div></div>
         <div class="failure-heading"><span class="eyebrow">INJECT A FAILURE</span><span>↓</span></div>
@@ -52,7 +56,7 @@
     </aside>
   </section>
   <div id="scenario-banner" class="scenario-banner" hidden><span class="scenario-index" id="scenario-index">01 / 03</span><div><strong id="scenario-title">Cut the lights</strong><p id="scenario-description">Consumers stop. Accepted jobs stay in the queue.</p></div><button id="stop-scenario">End walkthrough ×</button></div>
-  <footer><span><i class="footer-square"></i> FAILURE IS PART OF THE SYSTEM.</span><span>Java / RabbitMQ / Three.js <span class="footer-divider">·</span> <a href="/downloads/blackout-source.zip" download>Download the project ↗</a></span></footer>
+  <footer><span><i class="footer-square"></i> FAILURE IS PART OF THE SYSTEM.</span><span>Java / RabbitMQ / Three.js <span class="footer-divider">·</span> <a href="downloads/blackout-source.zip" download>Download the project ↗</a></span></footer>
 </main>
 <dialog id="info-dialog"><div class="dialog-header"><div><div class="eyebrow">BLACKOUT / FIELD NOTES</div><h2 id="dialog-title">Architecture</h2></div><button id="close-dialog" class="close-dialog" aria-label="Close dialog">×</button></div><div id="dialog-body"></div></dialog>
 <div id="toast" class="toast" role="status" hidden></div>

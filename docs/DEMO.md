@@ -8,6 +8,8 @@
 6. Open the request inspector and show completed jobs.
 7. End with the repository and the architecture diagram.
 
+For a no-install version, record the [hosted browser demo](https://nimamema.github.io/blackout-grid-public/) instead, and keep its **BROWSER DEMO** label in frame so viewers know the numbers are simulated.
+
 Suggested on-screen labels:
 
 - “A city powered by a real Java job pipeline.”
